@@ -1,0 +1,27 @@
+{
+  "name": "TechTalks",
+  "short_name": "TechTalks",
+  "description": "Анонимный мессенджер нового поколения",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121826",
+  "theme_color": "#8a2be2",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/okak-cat.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/okak-cat.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["social", "communication"],
+  "lang": "ru-RU",
+  "dir": "ltr"
+}

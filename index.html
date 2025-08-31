@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Обновленная политика CSP для поддержки emoji-picker-element -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https://cdn.jsdelivr.net; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self' ws: wss:">
+    <title>TechTalks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="/style.css" id="main-css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <header class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-atom"></i>
+                    <span>TechTalks</span>
+                </div>
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <span>Аноним#<span id="user-id">0000</span></span>
+                </div>
+            </header>
+            <div class="search">
+                <input type="text" placeholder="Поиск...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="chats">
+                <div class="chat active">
+                    <div class="chat-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="chat-details">
+                        <span>Общий чат</span>
+                        <p>Добро пожаловать в TechTalks!</p>
+                    </div>
+                    <span class="time">Сейчас</span>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Chat -->
+        <main class="chat-area">
+            <header class="chat-header">
+                <div class="chat-info">
+                    <div class="avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <span>Общий чат</span>
+                    <span class="online">онлайн: <span id="online-count">0</span></span>
+                </div>
+                <div class="chat-actions">
+                    <i class="fas fa-lock" title="Шифрование"></i>
+                    <i class="fas fa-shield-alt" title="Анонимность"></i>
+                </div>
+            </header>
+            <div class="messages" id="messages-container"></div>
+             <div class="message-input">
+                <div class="input-tools">
+                    <i class="fas fa-smile" id="emoji-button"></i>
+                    <i class="fas fa-paperclip" id="attachment-button"></i>
+                </div>
+                <!-- Простая палитра эмодзи -->
+                <div id="emoji-picker" class="emoji-picker" style="display: none;">
+                    <span class="emoji-option">😀</span>
+                    <span class="emoji-option">😂</span>
+                    <span class="emoji-option">😍</span>
+                    <span class="emoji-option">😎</span>
+                    <span class="emoji-option">👍</span>
+                    <span class="emoji-option">👎</span>
+                    <span class="emoji-option">❤️</span>
+                    <span class="emoji-option">🔥</span>
+                    <span class="emoji-option">🎉</span>
+                    <span class="emoji-option">🤔</span>
+                    <span class="emoji-option">😢</span>
+                    <span class="emoji-option">😡</span>
+                    <span class="emoji-option">🙏</span>
+                    <span class="emoji-option">👏</span>
+                    <span class="emoji-option">💯</span>
+                    <!-- Добавьте больше эмодзи по желанию -->
+                </div>
+                <input type="text" placeholder="Напишите сообщение..." id="message-input">
+                <button class="send-btn" id="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </main>
+        <!-- News Sidebar -->
+        <aside class="news-sidebar">
+            <div class="news-header">
+                <h3>Лента новостей</h3>
+                <!-- Кнопка для открытия формы (видна только админу) -->
+                <button id="open-news-form-btn" class="icon-btn" title="Добавить новость" style="display: none;">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <div id="news-container">
+                <!-- Новости будут загружаться здесь -->
+            </div>
+            <!-- Форма -->
+            <div id="admin-news-form" class="news-form-container" style="display: none;">
+                <div class="news-form-header">
+                    <span>Новая новость</span>
+                    <button id="close-news-form-btn" class="icon-btn" title="Закрыть">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <textarea id="news-text" placeholder="Введите текст новости..." rows="3"></textarea>
+                <div class="news-form-actions">
+                    <button id="add-news-btn" class="send-btn">
+                        <i class="fas fa-paper-plane"></i> Отправить
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <i class="fas fa-atom logo-icon"></i>
+                <h2>TechTalks</h2>
+                <p>Анонимный мессенджер нового поколения</p>
+            </div>
+            <div class="auth-tabs">
+                <button class="tab active" data-tab="login">Вход</button>
+                <button class="tab" data-tab="register">Регистрация</button>
+            </div>
+            <form id="login-form" class="auth-form active">
+                <input type="text" id="login-username" placeholder="Ваш логин" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button type="submit" class="auth-btn">Войти</button>
+                <div class="auth-footer">
+                    <p>Ваши данные хранятся только на вашем устройстве</p>
+                </div>
+            </form>
+            <form id="register-form" class="auth-form">
+                <input type="text" id="register-username" placeholder="Придумайте логин" required minlength="4">
+                <input type="password" id="register-password" placeholder="Придумайте пароль" required minlength="8">
+                <input type="password" id="confirm-password" placeholder="Повторите пароль" required>
+                <div class="key-visual">
+                    <div class="key-part"></div>
+                    <div class="key-part"></div>
+                    <div class="key-part"></div>
+                    <p>Ключ шифрования генерируется на вашем устройстве</p>
+                </div>
+                <button type="submit" class="auth-btn">Создать аккаунт</button>
+            </form>
+        </div>
+    </div>
+    <!-- Все скрипты вынесены в отдельные файлы -->
+    <script src="/cache-control.js"></script>
+    <!-- Подключаем emoji-picker-element через CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.21.2/index.js"></script>
+    <script type="module" src="/script.js"></script>
+</body>
+</html>
